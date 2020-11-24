@@ -25,7 +25,7 @@ function App() {
 
   const {
     sendMessage,
-  } = useWebSocket(`ws://${process.env.REACT_APP_API_URL}`, {
+  } = useWebSocket(`${process.env.REACT_APP_API_WS_URL}`, {
     onMessage: (message: MessageEvent) => {
         const json = JSON.parse(message.data);
         const command = json.command;

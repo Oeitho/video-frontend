@@ -33,7 +33,7 @@ const ChatManager: React.FC<Props> = (props: Props) => {
     };
 
     const createUser = async () => {
-        const response = await fetch(`${process.env.REACT_APP_API_FULL_URL}/author`, {
+        const response = await fetch(`${process.env.REACT_APP_API_HTTP_URL}/author`, {
             method: 'POST',
             cache:'no-cache', 
             headers: { 'Content-Type': 'application/json' }
@@ -47,7 +47,7 @@ const ChatManager: React.FC<Props> = (props: Props) => {
     };
 
     const refreshChat = async () => {
-        const response = await fetch(`${process.env.REACT_APP_API_FULL_URL}/chat`, {
+        const response = await fetch(`${process.env.REACT_APP_API_HTTP_URL}/chat`, {
             method: 'GET',
             cache: 'no-cache',
             headers: { 'Content-Type': 'application/json' }
@@ -59,7 +59,7 @@ const ChatManager: React.FC<Props> = (props: Props) => {
     }
 
     const refreshAuthors = async () => {
-        const response = await fetch(`${process.env.REACT_APP_API_FULL_URL}/author`, {
+        const response = await fetch(`${process.env.REACT_APP_API_HTTP_URL}/author`, {
             method: 'GET',
             cache: 'no-cache',
             headers: { 'Content-Type': 'application/json' }
@@ -83,7 +83,7 @@ const ChatManager: React.FC<Props> = (props: Props) => {
 
     const updateName = () => {
         if (credentials === undefined) return;
-        fetch(`${process.env.REACT_APP_API_FULL_URL}/author/${credentials.id}`, {
+        fetch(`${process.env.REACT_APP_API_HTTP_URL}/author/${credentials.id}`, {
             method: 'PATCH',
             cache: 'no-cache',
             mode: 'cors',
@@ -103,7 +103,7 @@ const ChatManager: React.FC<Props> = (props: Props) => {
             setMessageText('');
             return;
         }
-        fetch(`${process.env.REACT_APP_API_FULL_URL}/chat`, {
+        fetch(`${process.env.REACT_APP_API_HTTP_URL}/chat`, {
             method: 'POST',
             cache: 'no-cache',
             mode: 'cors',
