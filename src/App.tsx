@@ -7,7 +7,7 @@ import useWebSocket from 'react-use-websocket';
 function App() {
 
   const ref = useRef(null);
-  const [url, setUrl] = useState('https://www.youtube.com/watch?v=DDOL7iY8kfo');
+  const [url, setUrl] = useState('https://www.youtube.com/watch?v=qjG7TqoQog4');
   const [playing, setPlaying] = useState(true);
 
   const consumeCommand = (command: string, url: string | undefined) => {
@@ -25,7 +25,7 @@ function App() {
 
   const {
     sendMessage,
-  } = useWebSocket("ws://localhost:8080", {
+  } = useWebSocket(`ws://${process.env.REACT_APP_API_URL}`, {
     onMessage: (message: MessageEvent) => {
         const json = JSON.parse(message.data);
         const command = json.command;

@@ -6,7 +6,6 @@ import { setCredentials } from '../../redux/credentials/actions';
 import { setAuthors } from '../../redux/authors/actions';
 import { RootState } from '../../redux/rootReducer';
 import { CredentialsState } from '../../redux/credentials/state';
-import { MessageState } from '../../redux/messages/state';
 import { Message } from '../../interfaces/message';
 import { Author } from '../../interfaces/author';
 import Chat from './Chat';
@@ -34,7 +33,7 @@ const ChatManager: React.FC<Props> = (props: Props) => {
     };
 
     const createUser = async () => {
-        const response = await fetch('http://localhost:8080/author', {
+        const response = await fetch(`${process.env.REACT_APP_API_FULL_URL}/author`, {
             method: 'POST',
             cache:'no-cache', 
             headers: { 'Content-Type': 'application/json' }
@@ -48,7 +47,7 @@ const ChatManager: React.FC<Props> = (props: Props) => {
     };
 
     const refreshChat = async () => {
-        const response = await fetch('http://localhost:8080/chat', {
+        const response = await fetch(`${process.env.REACT_APP_API_FULL_URL}/chat`, {
             method: 'GET',
             cache: 'no-cache',
             headers: { 'Content-Type': 'application/json' }
@@ -60,7 +59,7 @@ const ChatManager: React.FC<Props> = (props: Props) => {
     }
 
     const refreshAuthors = async () => {
-        const response = await fetch('http://localhost:8080/author', {
+        const response = await fetch(`${process.env.REACT_APP_API_FULL_URL}/author`, {
             method: 'GET',
             cache: 'no-cache',
             headers: { 'Content-Type': 'application/json' }
@@ -78,13 +77,13 @@ const ChatManager: React.FC<Props> = (props: Props) => {
 
     useEffect(() => {
         if (!credentials) createUser();
-        const interval = setInterval(refreshData, 250);
+        const interval = setInterval(refreshData, 2000);
         return () => clearInterval(interval);
     }, []);
 
     const updateName = () => {
         if (credentials === undefined) return;
-        fetch("http://localhost:8080/author/" + credentials.id, {
+        fetch(`${process.env.REACT_APP_API_FULL_URL}/author/${credentials.id}`, {
             method: 'PATCH',
             cache: 'no-cache',
             mode: 'cors',
@@ -104,7 +103,7 @@ const ChatManager: React.FC<Props> = (props: Props) => {
             setMessageText('');
             return;
         }
-        fetch("http://localhost:8080/chat", {
+        fetch(`${process.env.REACT_APP_API_FULL_URL}/chat`, {
             method: 'POST',
             cache: 'no-cache',
             mode: 'cors',
