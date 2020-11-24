@@ -21,7 +21,7 @@ export const VideoPlayer: React.FC<Props> = (props: Props) => {
             ref={reference}
             playing={playing}
             controls={true}
-            muted={false}
+            muted={true}
             height={dimensions.height}
             width={dimensions.width}
             onPause={() => { if (playing) setTimeout(() => sendCommand('pause', ''), 50) }}

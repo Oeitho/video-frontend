@@ -10,6 +10,16 @@ function App() {
   const [url, setUrl] = useState('https://www.youtube.com/watch?v=qjG7TqoQog4');
   const [playing, setPlaying] = useState(true);
 
+  useEffect(() => {
+    fetch(`${process.env.REACT_APP_API_HTTP_URL}/video`, {
+      method: 'GET',
+      cache: 'no-cache',
+    })
+      .then(response => response.json())
+      .then(response => setUrl(response.current))
+      .catch(console.error);
+  }, []);
+
   const consumeCommand = (command: string, url: string | undefined) => {
     switch(command) {
         case 'pause':
