@@ -15,7 +15,7 @@ const ChatMessage: React.FC<Props> = (props: Props) => {
 
     const findName = (userId: number) => {
         for (let i = 0; i < authors.length; i++) {
-            if (authors[i].id === userId) {
+            if (authors[i].id.toString() === userId.toString()) {
                 return authors[i].name;
             }
         }

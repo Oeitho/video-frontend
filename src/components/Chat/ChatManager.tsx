@@ -46,7 +46,7 @@ const ChatManager: React.FC<Props> = (props: Props) => {
         setName(credentials.name);
     };
 
-    const refreshChat = async () => {
+    const fetchChat = async () => {
         const response = await fetch(`${process.env.REACT_APP_API_HTTP_URL}/chat`, {
             method: 'GET',
             cache: 'no-cache',
@@ -72,9 +72,9 @@ const ChatManager: React.FC<Props> = (props: Props) => {
 
     useEffect(() => {
         if (!credentials) createUser();
-        const chatInterval = setInterval(refreshChat, 500);
+        fetchChat();
         const authorInterval = setInterval(refreshAuthors, 2000);
-        return () => { clearInterval(chatInterval); clearInterval(authorInterval); };
+        return () => { clearInterval(authorInterval); };
         // eslint-disable-next-line
     }, []);
 

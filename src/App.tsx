@@ -3,8 +3,18 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ChatManager from './components/Chat/ChatManager';
 import { VideoPlayer } from './components/Video/VideoPlayer';
 import useWebSocket from 'react-use-websocket';
+import { connect } from 'react-redux';
 
-function App() {
+import { appendMessages } from './redux/messages/actions';
+import { Message } from './interfaces/message';
+
+interface Props {
+  appendMessages: (messages: Message[]) => any;
+}
+
+const App: React.FC<Props> = (props: Props) => {
+
+  const { appendMessages } = props;
 
   const ref = useRef(null);
   const [url, setUrl] = useState('https://www.youtube.com/watch?v=qjG7TqoQog4');
@@ -20,7 +30,9 @@ function App() {
       .catch(console.error);
   }, []);
 
-  const consumeCommand = (command: string, url: string | undefined) => {
+  const consumeCommand = (messageText: string) => {
+    const json = JSON.parse(messageText);
+    const command = json.command;
     switch(command) {
         case 'pause':
             if (playing) setPlaying(false);
@@ -29,21 +41,24 @@ function App() {
             if (!playing) setPlaying(true);
             break;
         case 'url':
-            if (url) setUrl(url);
-    }
+            if (json.url) setUrl(json.url);
+            break;
+        case 'chat':
+            if (json.message) appendMessages([json.message]);
+            break;
+        default:
+            break;
+          }
+    return json.currentTime;
   };
 
   const {
     sendMessage,
   } = useWebSocket(`${process.env.REACT_APP_API_WS_URL}`, {
     onMessage: (message: MessageEvent) => {
-        const json = JSON.parse(message.data);
-        const command = json.command;
-        const url = json.url;
-
-        consumeCommand(command, url);
+        const currentTime = consumeCommand(message.data);
         // @ts-ignore
-        ref.current.seekTo(json.currentTime);
+        if (currentTime) ref.current.seekTo(json.currentTime);
     }
   });
 
@@ -87,4 +102,4 @@ function App() {
   );
 }
 
-export default App;
+export default connect(undefined, { appendMessages })(App);
