@@ -11,3 +11,16 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+button {
+  border: none;
+  background-color: #20649b;
+  color: white;
+  padding: 10px 10px;
+  border-radius: 1px;
+  margin-left: 10px;
+}
+
+button:hover {
+  background-color: #65b2f2;
+}

@@ -25,7 +25,9 @@ const Chat: React.FC<Props> = (props: Props) => {
     return (
         <div id="chat-container" style={{
             marginRight: '0px',
+            width: '250px',
             maxWidth: '250px',
+            overflow: 'hidden'
         }}>
             <div id="chat" style={{
                 boxShadow: '0 0 4px #666666',
@@ -34,16 +36,27 @@ const Chat: React.FC<Props> = (props: Props) => {
                 display: 'grid',
                 gridTemplateRows: 'auto 1fr auto',
             }}>
-                <div>
+                <div style={{
+                    display: 'flex',
+                }}>
                     { credentials ?
                         <>
-                            <input type="text" value={name} onChange={event => setName (event.target.value)} onKeyDown={event => event.key === 'Enter' && updateName()} />
+                            <input 
+                                type="text"
+                                value={name}
+                                onChange={event => setName (event.target.value)}
+                                onKeyDown={event => event.key === 'Enter' && updateName()}
+                                style={{
+                                    width: '144px',
+                                }}
+                                 />
                             <button onClick={updateName}>Change</button>
                         </>
                         : 'Fetching name...' }
                 </div>
                 <div style={{
                     overflowY: 'scroll',
+                    margin: '10px 0',
                 }}>
                     {
                         messages ? messages
@@ -51,11 +64,20 @@ const Chat: React.FC<Props> = (props: Props) => {
                             .map(message => <ChatMessage message={message} key={message.id} />) : 'Loading messages...'
                     }
                 </div>
-                <div>
+                <div style={{
+                    display: 'flex',
+                }}>
                     {
                         credentials ?
                         <>
-                            <input type="text" value={messageText} onChange={event => setMessageText(event.target.value)} onKeyDown={event => event.key === 'Enter' && sendMessage() } />
+                            <textarea
+                                value={messageText}
+                                onChange={event => setMessageText(event.target.value)}
+                                onKeyDown={event => event.key === 'Enter' && sendMessage()}
+                                style={{
+                                    resize: 'none',
+                                    width: '160px',
+                                }} />
                             <button onClick={sendMessage}>Send</button>
                         </>
                         : <></>

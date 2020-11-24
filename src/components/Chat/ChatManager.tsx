@@ -70,15 +70,12 @@ const ChatManager: React.FC<Props> = (props: Props) => {
         setAuthors(authors.authors); 
     }
 
-    const refreshData = async () => {
-        refreshChat();
-        refreshAuthors();
-    };
-
     useEffect(() => {
         if (!credentials) createUser();
-        const interval = setInterval(refreshData, 500);
-        return () => clearInterval(interval);
+        const chatInterval = setInterval(refreshChat, 500);
+        const authorInterval = setInterval(refreshAuthors, 2000);
+        return () => { clearInterval(chatInterval); clearInterval(authorInterval); };
+        // eslint-disable-next-line
     }, []);
 
     const updateName = () => {

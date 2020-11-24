@@ -57,10 +57,10 @@ function App() {
           url
       };
       sendMessage(JSON.stringify(json));
-  }, []);
+  }, [sendMessage]);
 
   const dimensions_query = () => {
-    const width = window.innerWidth - 200;
+    const width = window.innerWidth - 250;
     const height = window.innerHeight;
     return { width, height };
   };
