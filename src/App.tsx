@@ -58,7 +58,7 @@ const App: React.FC<Props> = (props: Props) => {
     onMessage: (message: MessageEvent) => {
         const currentTime = consumeCommand(message.data);
         // @ts-ignore
-        if (currentTime) ref.current.seekTo(json.currentTime);
+        if (currentTime) ref.current.seekTo(currentTime);
     }
   });
 
