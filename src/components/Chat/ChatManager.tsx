@@ -77,7 +77,7 @@ const ChatManager: React.FC<Props> = (props: Props) => {
 
     useEffect(() => {
         if (!credentials) createUser();
-        const interval = setInterval(refreshData, 2000);
+        const interval = setInterval(refreshData, 500);
         return () => clearInterval(interval);
     }, []);
 
