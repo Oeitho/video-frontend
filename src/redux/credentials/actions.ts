@@ -15,7 +15,7 @@ export interface ResetCredentials {
 
 export type CredentialsActions = SetCredentials | ResetCredentials;
 
-export const setCredentials = (credentials: Credentials): CredentialsActions => {
+export const setCredentials = (credentials: Credentials | undefined): CredentialsActions => {
     return {
         type: SET_CREDENTIALS,
         payload: {

@@ -12,7 +12,7 @@ import Chat from './Chat';
 
 interface Props {
     credentialsState: CredentialsState;
-    setCredentials: (credentials: Credentials) => any;
+    setCredentials: (credentials: Credentials | undefined) => any;
     setMessages: (messages: Message[]) => any;
     setAuthors: (authors: Author[]) => any;
     sendCommand: (command: string, url: string) => any;
@@ -28,11 +28,13 @@ const ChatManager: React.FC<Props> = (props: Props) => {
 
     const requestFailure = (response: Response) => {
         if (response.ok) return false;
-        console.error(`Request failed with status code: ${response.status}!`);
+        if (response.status === 403) createUser();
+        else console.error(`Request failed with status code: ${response.status}!`);
         return true;
     };
 
     const createUser = async () => {
+        setCredentials(undefined);
         const response = await fetch(`${process.env.REACT_APP_API_HTTP_URL}/author`, {
             method: 'POST',
             cache:'no-cache', 
@@ -45,6 +47,25 @@ const ChatManager: React.FC<Props> = (props: Props) => {
         setCredentials(credentials);
         setName(credentials.name);
     };
+
+    const checkCredentials = async() => {
+        if (!credentials) {
+            createUser();
+            return;
+        }
+        const response = await fetch(`${process.env.REACT_APP_API_HTTP_URL}/author/self`, {
+            method: 'GET',
+            cache:'no-cache',
+            mode: 'cors',
+            headers: { 
+                'Content-Type': 'application/json',
+                'id': credentials.id.toString(),
+                'secret': credentials.secret
+            }
+        });
+
+        requestFailure(response)
+    }
 
     const fetchChat = async () => {
         const response = await fetch(`${process.env.REACT_APP_API_HTTP_URL}/chat`, {
@@ -71,10 +92,10 @@ const ChatManager: React.FC<Props> = (props: Props) => {
     }
 
     useEffect(() => {
-        if (!credentials) createUser();
+        checkCredentials();
         fetchChat();
         const authorInterval = setInterval(refreshAuthors, 2000);
-        return () => { clearInterval(authorInterval); };
+        return () => clearInterval(authorInterval);
         // eslint-disable-next-line
     }, []);
 
