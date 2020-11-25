@@ -9,7 +9,7 @@ interface Props {
         height: number; 
     };
     reference: MutableRefObject<null>;
-    sendCommand: (command: string, url: string) => any;
+    sendCommand: (command: string, payload: { [key: string]: string }) => any;
 }
 
 export const VideoPlayer: React.FC<Props> = (props: Props) => {
@@ -24,8 +24,8 @@ export const VideoPlayer: React.FC<Props> = (props: Props) => {
             muted={true}
             height={dimensions.height}
             width={dimensions.width}
-            onPause={() => { if (playing) setTimeout(() => sendCommand('pause', ''), 50) }}
-            onPlay={() => { if (!playing) setTimeout(() => sendCommand('play', ''), 50) }}
+            onPause={() => { if (playing) setTimeout(() => sendCommand('pause', {}), 50) }}
+            onPlay={() => { if (!playing) setTimeout(() => sendCommand('play', {}), 50) }}
             />
     );
 }

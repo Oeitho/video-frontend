@@ -30,8 +30,7 @@ const App: React.FC<Props> = (props: Props) => {
       .catch(console.error);
   }, []);
 
-  const consumeCommand = (messageText: string) => {
-    const json = JSON.parse(messageText);
+  const consumeCommand = (json: {command: string, payload: {[key: string]: any}}) => {
     const command = json.command;
     switch(command) {
         case 'pause':
@@ -41,35 +40,36 @@ const App: React.FC<Props> = (props: Props) => {
             if (!playing) setPlaying(true);
             break;
         case 'url':
-            if (json.url) setUrl(json.url);
+            if (json.payload.url) setUrl(json.payload.url);
             break;
         case 'chat':
-            if (json.message) appendMessages([json.message]);
+            if (json.payload.message) appendMessages([json.payload.message]);
             break;
         default:
             break;
           }
-    return json.currentTime;
   };
 
   const {
     sendMessage,
   } = useWebSocket(`${process.env.REACT_APP_API_WS_URL}`, {
     onMessage: (message: MessageEvent) => {
-        const currentTime = consumeCommand(message.data);
+        const json: {command: string, payload: {[key: string]: string}} = JSON.parse(message.data);
+        const currentTime = json.payload?.currentTime;
+        consumeCommand(json);
         // @ts-ignore
         if (currentTime) ref.current.seekTo(currentTime);
     }
   });
 
-  const sendCommand = useCallback((command, url) => {
+  const sendCommand = useCallback((command, payload: { [ key: string ]: string }) => {
       if (!ref.current) return;
       // @ts-ignore
       const currentTime = ref.current.getCurrentTime();
       const json = {
           currentTime,
           command,
-          url
+          payload
       };
       sendMessage(JSON.stringify(json));
   }, [sendMessage]);

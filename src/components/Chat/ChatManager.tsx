@@ -15,7 +15,7 @@ interface Props {
     setCredentials: (credentials: Credentials | undefined) => any;
     setMessages: (messages: Message[]) => any;
     setAuthors: (authors: Author[]) => any;
-    sendCommand: (command: string, url: string) => any;
+    sendCommand: (command: string, payload: { [key: string]: string }) => any;
 }
 
 const ChatManager: React.FC<Props> = (props: Props) => {
@@ -117,7 +117,7 @@ const ChatManager: React.FC<Props> = (props: Props) => {
     const sendMessage = () => {
         if (credentials === undefined || messageText === '') return;
         if (messageText.substring(0, 4) === 'url ') {
-            sendCommand('url', messageText.substring(4));
+            sendCommand('url', { url: messageText.substring(4) });
             setMessageText('');
             return;
         }
