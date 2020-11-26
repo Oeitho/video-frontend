@@ -54,11 +54,13 @@ const App: React.FC<Props> = (props: Props) => {
     sendMessage,
   } = useWebSocket(`${process.env.REACT_APP_API_WS_URL}`, {
     onMessage: (message: MessageEvent) => {
-        const json: {command: string, payload: {[key: string]: string}} = JSON.parse(message.data);
-        const currentTime = json.payload?.currentTime;
+        const json: {command: string, currentTime?: number, payload: {[key: string]: string}} = JSON.parse(message.data);
+        const currentTime = json.currentTime;
         consumeCommand(json);
         // @ts-ignore
-        if (currentTime) ref.current.seekTo(currentTime);
+        const localTime = ref.current.getCurrentTime();
+        // @ts-ignore
+        if (currentTime &&  Math.abs(currentTime - localTime) > 0.3) ref.current.seekTo(currentTime);
     }
   });
 
