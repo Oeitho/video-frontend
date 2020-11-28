@@ -85,7 +85,7 @@ const App: React.FC<Props> = (props: Props) => {
   }, [sendMessage]);
 
   useEffect(() => {
-    setInterval(() => sendCommand('keep-alive', {}), 500);
+    setInterval(() => sendCommand('keep-alive', {}), 10000);
   }, [sendCommand]);
 
   const dimensions_query = () => {
