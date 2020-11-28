@@ -40,7 +40,12 @@ const App: React.FC<Props> = (props: Props) => {
             if (!playing) setPlaying(true);
             break;
         case 'url':
-            if (json.payload.url) setUrl(json.payload.url);
+            if (json.payload.url) {
+              setPlaying(false);
+              // @ts-ignore
+              ref?.current?.seekTo(0)
+              setUrl(json.payload.url);
+            }
             break;
         case 'chat':
             if (json.payload.message) appendMessages([json.payload.message]);
