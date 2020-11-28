@@ -33,7 +33,7 @@ const ChatMessage: React.FC<Props> = (props: Props) => {
                 {findName(message.user_id)}
             </div>
             <div className="chat-message" style={{
-                wordBreak: 'break-all',
+                wordBreak: 'break-word',
             }}>
                 {message.chat_message}
             </div>
