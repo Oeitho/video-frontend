@@ -50,9 +50,12 @@ const App: React.FC<Props> = (props: Props) => {
         case 'chat':
             if (json.payload.message) appendMessages([json.payload.message]);
             break;
+        case 'keep-alive':
+            console.log('keep-alive received'); 
+            break;
         default:
             break;
-          }
+        }
   };
 
   const {
