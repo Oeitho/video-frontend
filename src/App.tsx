@@ -76,6 +76,10 @@ const App: React.FC<Props> = (props: Props) => {
       sendMessage(JSON.stringify(json));
   }, [sendMessage]);
 
+  useEffect(() => {
+    setInterval(() => sendCommand('keep-alive', {}), 500);
+  }, [sendCommand]);
+
   const dimensions_query = () => {
     const width = window.innerWidth - 250;
     const height = window.innerHeight;
